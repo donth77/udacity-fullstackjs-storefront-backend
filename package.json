@@ -7,10 +7,10 @@
     "start": "nodemon src/server.ts",
     "create-test-db": "dotenv cross-var db-migrate db:create %POSTGRES_DB_TEST%",
     "drop-test-db": "dotenv cross-var db-migrate db:drop %POSTGRES_DB_TEST%",
-    "test": "yarn drop-test-db && yarn create-test-db && db-migrate --env test up && cross-env ENV=test jasmine-ts --config=jasmine.json --reporter=jasmine-console-reporter && db-migrate --env test down --count 4 && yarn drop-test-db",
+    "test": "yarn build && yarn drop-test-db && yarn create-test-db && db-migrate --env test up && cross-env ENV=test jasmine --config=jasmine.json --reporter=jasmine-console-reporter && db-migrate --env test down --count 4 && yarn drop-test-db",
     "lint": "eslint . --ext .ts",
     "format": "prettier --config .prettierrc.json src/**/**.ts --write",
-    "build": "npx tsc --esModuleInterop src/server.ts --outDir ./dist",
+    "build": "npx tsc",
     "db-down-all": "db-migrate down --count 4"
   },
   "author": "Udacity",

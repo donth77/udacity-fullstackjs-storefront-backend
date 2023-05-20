@@ -66,4 +66,5 @@ Import this into Postman and all of the endpoints can easily be tested with the 
 If Docker isn't up and running, make sure it is with `docker-compose up -d`
 
 Run the following command:
-`yarn test`
+
+1. `yarn test`
