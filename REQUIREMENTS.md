@@ -11,6 +11,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Index: `GET /products`
 - Show: `GET /products/:id`
 - Create [token required]: `POST /products`
+- Delete [token required]: `DELETE /products/:id`
 - Top 5 most popular products: `GET /dashboard/five-most-popular`
 - Products by category (args: product category) `GET /products?category=<category>`
 
@@ -35,10 +36,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Dashboard Queries
 
-- 5 most expensive products: `GET /dashboard/five-most-expensive`
-- Products in Orders: `GET /dashboard/products-in-orders`
-- Users with Orders: `GET /dashboard/users-with-orders`
 - 5 most popular products: `GET /dashboard/five-most-popular`
+- 5 most expensive products: `GET /dashboard/five-most-expensive`
 
 ## Data Shapes
 
@@ -49,7 +48,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - price
 - category
 
-Create query for products table:
+Query / schema for products table:
 
 ```
 CREATE TABLE
@@ -64,19 +63,19 @@ CREATE TABLE
 #### User
 
 - id
-- firstName
-- lastName
+- firstname
+- lastname
 - username
 - password
 
-Create query for users table:
+Query / schema for users table:
 
 ```
 CREATE TABLE
     users (
         id SERIAL PRIMARY KEY,
-        firstName VARCHAR(256) NOT NULL,
-        lastName VARCHAR(256) NOT NULL,
+        firstname VARCHAR(256) NOT NULL,
+        lastname VARCHAR(256) NOT NULL,
         username VARCHAR(256) NOT NULL,
         password_digest VARCHAR(256) NOT NULL
     );
@@ -91,7 +90,7 @@ CREATE TABLE
 - order_time
 - status of order (active or complete)
 
-Create query for orders table:
+Query / schema for orders table:
 
 ```
 CREATE TABLE
@@ -101,9 +100,10 @@ CREATE TABLE
         user_id BIGINT REFERENCES users (id),
         order_time TIMESTAMP NOT NULL
     );
+
 ```
 
-Create query for order_products table:
+Query / schema for order_products table:
 
 ```
 CREATE TABLE

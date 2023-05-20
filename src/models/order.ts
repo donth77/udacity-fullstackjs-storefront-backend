@@ -106,32 +106,6 @@ export class OrderStore {
     }
   }
 
-  async showWithProducts(id: number): Promise<OrderWithProducts> {
-    try {
-      // Query orders table
-      const sql = 'SELECT * FROM orders WHERE id=($1)';
-      const conn = await Client.connect();
-      const { rows: orderRows } = await conn.query(sql, [id]);
-      const order = orderRows[0];
-
-      // Query order_products table for the order
-      const orderProductSql =
-        'SELECT product_id, quantity FROM order_products WHERE order_id=($1)';
-      const { rows: orderProductRows } = await conn.query(orderProductSql, [
-        order.id,
-      ]);
-      const result: OrderWithProducts = {
-        ...order,
-        products: orderProductRows,
-      };
-
-      conn.release();
-      return result;
-    } catch (err) {
-      throw new Error(`Failed to find order ${id}. ${err}`);
-    }
-  }
-
   async create(createOrder: CreateOrder): Promise<Order> {
     const { status, userId } = createOrder;
     try {
@@ -169,22 +143,6 @@ export class OrderStore {
     orderId: number,
     productId: string
   ): Promise<OrderProduct> {
-    // get order to see if it is open
-    // try {
-    //   const sql = "SELECT * FROM orders WHERE id=($1)";
-    //   const conn = await Client.connect();
-    //   const { rows } = await conn.query(sql, [orderId]);
-    //   const order: Order = rows[0];
-    //   if (order.status !== "open") {
-    //     throw new Error(
-    //       `Could not add product ${productId} to order ${orderId} because order status is ${order.status}`
-    //     );
-    //   }
-    //   conn.release();
-    // } catch (err) {
-    //   throw new Error(`${err}`);
-    // }
-
     try {
       const sql = `INSERT INTO order_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *`;
       const conn = await Client.connect();

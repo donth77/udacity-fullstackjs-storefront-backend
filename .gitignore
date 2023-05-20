@@ -2,5 +2,6 @@ node_modules
 package-lock.json
 *.log
 dist
-.env*
-database.json*
+.env
+.vscode
+.DS_Store

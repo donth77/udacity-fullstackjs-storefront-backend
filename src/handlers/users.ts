@@ -14,12 +14,12 @@ export default function userRoutes(app: Application) {
   app.get('/users/:id', checkIdParam, verifyJWT, show); // auth token required
   app.post(
     '/users',
-    checkMissingBodyParams(['firstName', 'lastName', 'username', 'password']),
+    checkMissingBodyParams(['firstname', 'lastname', 'username', 'password']),
     create
   );
   app.put(
     '/users/:id',
-    checkMissingBodyParams(['firstName', 'lastName']),
+    checkMissingBodyParams(['firstname', 'lastname']),
     checkIdParam,
     verifyJWT,
     update
@@ -58,10 +58,10 @@ const show = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, username, password } = req.body;
+    const { firstname, lastname, username, password } = req.body;
     const newUser: User = await userStore.create({
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       username,
       password,
     });
@@ -75,10 +75,10 @@ const create = async (req: Request, res: Response) => {
 const update = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    const { firstName, lastName } = req.body;
+    const { firstname, lastname } = req.body;
     const updateUser: User = await userStore.update(id, {
-      firstName,
-      lastName,
+      firstname,
+      lastname,
     });
     if (!updateUser) {
       return sendErrorResp(res, 400, `User not found for id ${id}`);

@@ -10,7 +10,7 @@
   "test": {
     "driver": "pg",
     "host": "localhost",
-    "port": 5433,
+    "port": 5432,
     "database": { "ENV": "POSTGRES_DB_TEST" },
     "user": { "ENV": "POSTGRES_USER" },
     "password": { "ENV": "POSTGRES_PASSWORD" }

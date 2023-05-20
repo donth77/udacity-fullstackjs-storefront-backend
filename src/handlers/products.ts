@@ -8,6 +8,7 @@ import {
 } from './errorHelper';
 import { Product, ProductStore } from '../models/product';
 import { isStrValidNumber } from '../utils';
+import { InfoResp } from './types';
 
 export default function productRoutes(app: Application) {
   app.get('/products', index);
@@ -18,6 +19,7 @@ export default function productRoutes(app: Application) {
     verifyJWT,
     create
   ); // auth token required
+  app.delete('/products/:id', checkIdParam, verifyJWT, deleteProduct); // auth token required
 }
 
 const productStore = new ProductStore();
@@ -57,6 +59,21 @@ const create = async (req: Request, res: Response) => {
       category,
     });
     res.json(newProduct);
+  } catch (err) {
+    handleCrudError(res, err as Error);
+  }
+};
+
+const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    await productStore.delete(id);
+    const code = 200;
+    const infoResp: InfoResp = {
+      code,
+      msg: `Successfully deleted product with id ${id}`,
+    };
+    res.status(code).json(infoResp);
   } catch (err) {
     handleCrudError(res, err as Error);
   }

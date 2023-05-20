@@ -48,8 +48,8 @@ export class ProductStore {
     }
   }
 
-  async update(id: number, productData: Product): Promise<Product> {
-    const { name, price, category } = productData;
+  async update(id: number, product: Product): Promise<Product> {
+    const { name, price, category } = product;
 
     try {
       const sql =
@@ -63,13 +63,13 @@ export class ProductStore {
     }
   }
 
-  async delete(id: number): Promise<Product> {
+  async delete(id: number): Promise<boolean> {
     try {
       const sql = 'DELETE FROM products WHERE id=($1)';
       const conn = await Client.connect();
-      const { rows } = await conn.query(sql, [id]);
+      await conn.query(sql, [id]);
       conn.release();
-      return rows[0];
+      return true;
     } catch (err) {
       throw new Error(`Failed to delete product ${id}. ${err}`);
     }

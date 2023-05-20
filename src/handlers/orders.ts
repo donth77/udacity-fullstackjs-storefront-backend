@@ -37,7 +37,7 @@ export default function orderRoutes(app: Application) {
 const orderStore = new OrderStore();
 
 const index = async (req: Request, res: Response) => {
-  const userId = req.query.userId;
+  const userId = req.query.userid;
   const status = req.query.status;
   const withProductsBool = req.query.withProducts === 'true';
 

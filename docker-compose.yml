@@ -12,14 +12,5 @@ services:
     volumes:
       - 'app-volume:/var/lib/postgresql/data'
 
-  postgres-test:
-    image: postgres
-    ports:
-      - '5433:5432'
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB_TEST}
-    env_file:
-      - .env
-
 volumes:
   app-volume:

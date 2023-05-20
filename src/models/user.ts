@@ -3,8 +3,8 @@ import Client from '../database';
 
 export interface User {
   id: number;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   username: string;
   password: string;
 }
@@ -38,19 +38,19 @@ export class UserStore {
   }
 
   async create(user: CreateUser): Promise<User> {
-    const { firstName, lastName, username, password } = user;
+    const { firstname, lastname, username, password } = user;
 
     try {
       const sql =
-        'INSERT INTO users (firstName, lastName, username, password_digest) VALUES($1, $2, $3, $4) RETURNING *';
+        'INSERT INTO users (firstname, lastname, username, password_digest) VALUES($1, $2, $3, $4) RETURNING *';
       const hash = bcrypt.hashSync(
         password + process.env.BCRYPT_PASSWORD,
         parseInt(process.env.SALT_ROUNDS as string, 10)
       );
       const conn = await Client.connect();
       const { rows } = await conn.query(sql, [
-        firstName,
-        lastName,
+        firstname,
+        lastname,
         username,
         hash,
       ]);
@@ -59,27 +59,24 @@ export class UserStore {
 
       return rows[0];
     } catch (err) {
-      if (Client) {
-        console.log(JSON.stringify(Client, null, 2));
-      }
       throw new Error(
-        `Failed to add new user ${firstName} ${lastName}. ${err}`
+        `Failed to add new user ${firstname} ${lastname}. ${err}`
       );
     }
   }
 
   async update(id: number, user: UpdateUser): Promise<User> {
-    const { firstName, lastName } = user;
+    const { firstname, lastname } = user;
     try {
       const sql =
-        'UPDATE users SET firstName = $1, lastName = $2 WHERE id = $3 RETURNING *';
+        'UPDATE users SET firstname = $1, lastname = $2 WHERE id = $3 RETURNING *';
       const conn = await Client.connect();
-      const { rows } = await conn.query(sql, [firstName, lastName, id]);
+      const { rows } = await conn.query(sql, [firstname, lastname, id]);
       conn.release();
       return rows[0];
     } catch (err) {
       throw new Error(
-        `Failed to update user ${firstName} ${lastName}. $ ${err}`
+        `Failed to update user ${firstname} ${lastname}. $ ${err}`
       );
     }
   }
